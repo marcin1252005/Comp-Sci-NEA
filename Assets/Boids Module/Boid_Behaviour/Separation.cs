@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(menuName = "Boid/Algorithm/Separation")]
-public class Separation : Boids_Algorithm
+public class Separation : LayerMaskBehaviour
 {
+    //smoothdamp parameters
+    Vector3 currentVelocity;
+    [Range(0.1f, 10f)]
+    public float boidSmoothTime = 0.4f;
     public override Vector3 calcBoids(Boid_Agent agent, List<Transform> environment, Boids boids)
     {
        //check for boids in range
@@ -14,7 +18,8 @@ public class Separation : Boids_Algorithm
        int avoidCount = 0;
         Vector3 separationVector = Vector3.zero;
         //initalise separation vector to [0,0,0]
-        foreach(Transform boid in environment)
+        List<Transform> environmentLayer = (layer == null) ? environment : layer.ObjectsInLayer(agent, environment);
+        foreach (Transform boid in environmentLayer)
         //iterate through each boid in visual range
         {
             if (Vector3.SqrMagnitude(boid.position - agent.transform.position) < boids.getSquareAvoidRange)
@@ -27,8 +32,11 @@ public class Separation : Boids_Algorithm
             }
         }
         if (avoidCount > 0)
-              separationVector /= avoidCount;
-            //calculate average separation vector
+        {
+            separationVector /= avoidCount;
+            separationVector = Vector3.SmoothDamp(agent.transform.forward, separationVector, ref currentVelocity, boidSmoothTime);
+        }
+        //calculate average separation vector
         return separationVector;
     }
 }

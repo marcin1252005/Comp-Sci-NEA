@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Boids : MonoBehaviour
 {
@@ -14,10 +15,11 @@ public class Boids : MonoBehaviour
     //where boids will spawn from game object in editor
     [Range(1f, 10000f)]
     public float visualRange = 3f;
+    [Range(10f, 300f)]
+    public float maxViewingAngle = 120f;
     //visual range of boids
     [Range(0f, 10000f)]
     public float avoidRange = 0.1f;
-    //takes a parameter between 0 and 1, will be a percentage of the visual range of the boid where it will avoid collision
     [Range(10, 300)]
     public int initialPop = 29;
     //starting value of boids
@@ -91,12 +93,13 @@ public class Boids : MonoBehaviour
             Vector3 updatePosition = resultantVector.calcBoids(agent, environment, this);
             updatePosition *= speedMultiplier;
             //change vector by the speed multiplier
+
             if (updatePosition.sqrMagnitude > getSquareMaxSpeed)
             //check if exceeds max speed
             {
                 updatePosition = updatePosition.normalized * maxSpeed;
-                //if exceeds max speed, normalise and reduce magnitude to 1
-                //then multiply by maxSpeed to reset magnitude to maxSpeed
+               //if exceeds max speed, normalise and reduce magnitude to 1
+               //then multiply by maxSpeed to reset magnitude to maxSpeed
             }
                 
            //calculates final vector for each agent given its environment in the array
@@ -110,16 +113,19 @@ public class Boids : MonoBehaviour
             //performs collision check by checking for colliders within sphere of radius visual range
             foreach (Collider collider in colliders)
             {
+                //ignore own collider
                 if (collider != agent.getboidCollider)
                 {
-                    //ignore own collider
-                    environment.Add(collider.transform);
+                    Vector3 boidToCollider = (collider.transform.position - agent.transform.position);
+                    float angle = Vector3.Angle(agent.transform.forward, boidToCollider);
+                    if(angle <= maxViewingAngle)
+                    {
+                     environment.Add(collider.transform);
+                    }                    
                 }
                 //append transform to list of colliders within range      
-
             }
             return environment;
-
         }
     }
 }

@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f408439ebfd9f9a4d8bbd8f087a3cffd, type: 3}
   m_Name: Alignment
   m_EditorClassIdentifier: 
+  layer: {fileID: 11400000, guid: bfb28637aed1f3d40988d7aa2b481f24, type: 2}
+  boidSmoothTime: 0.1

@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7770a49413afe2c47bf12d7520e02090, type: 3}
   m_Name: Cohesion
   m_EditorClassIdentifier: 
+  layer: {fileID: 11400000, guid: bfb28637aed1f3d40988d7aa2b481f24, type: 2}
+  boidSmoothTime: 0.5
