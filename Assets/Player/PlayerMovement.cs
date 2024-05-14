@@ -54,8 +54,21 @@ public class PlayerMovement : MonoBehaviour
             moveDirection = move.ReadValue<Vector2>();
             lookDirection = look.ReadValue<Vector2>();
 
-            float mouseX = lookDirection.x;
-            float mouseY = lookDirection.y;
+            //if is sprinting speed is sprintSpeed esle speed is walkSpeed
+            float speed = isSprinting ? sprintSpeed : walkSpeed;
+            movement = new Vector3(moveDirection.x * speed, 0, moveDirection.y * speed);
+            //update movement vector
+            rb.MovePosition(transform.position + transform.TransformDirection(movement * Time.deltaTime));
+            //update velocity to direction of movement
+            //check if there is a collider directly below player
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.25f))
+            {
+                isOnGround = true;
+                //Debug.Log("Ground Detected");
+                isJumping = false;
+            }
+            else isOnGround = false;
+        }
 
             transform.Rotate(Vector3.up * mouseX);
             float verticalRotation = -mouseY;
