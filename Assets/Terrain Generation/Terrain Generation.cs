@@ -33,9 +33,29 @@ public class TerrainGeneration : MonoBehaviour
             return;
         }
         GenerateTerrain();
+        GetMeshColliderBounds();
         //generate terrain upon loading scene
+        //get collider bounds after generating terrain
     }
-
+    public Bounds GetMeshColliderBounds()
+    {
+        MeshCollider meshCollider = GetComponent<MeshCollider>();
+        //access mesh collider component
+        if (meshCollider != null)
+        //validate that there is a collider
+        {
+           // Debug.Log(meshCollider.bounds);
+            return meshCollider.bounds;
+            //return collider bounds
+        }
+        else
+        {
+            Debug.LogWarning("MeshCollider could not be accessed");
+            //print relevant error message
+            return new Bounds();
+            //return empty bounds
+        }
+    }
     void GenerateTerrain()
     {
         vertexCount = (terrainDivisions + 1) * (terrainDivisions + 1);
@@ -176,7 +196,8 @@ public class TerrainGeneration : MonoBehaviour
         int midpoint = (row + halfSide) * (terrainDivisions + 1) + (int)(column+halfSide);
         //midpoint is current row then jump down half size of current square
         //then offset to right by current column plus half size again
-        newVertices[midpoint].y = 0.25f*(newVertices[topLeft].y + newVertices[bottomLeft].y + newVertices[bottomLeft + size].y + newVertices[topLeft + size].y)+Random.Range(-randomOffset,randomOffset);
+        newVertices[midpoint].y = 0.25f*(newVertices[topLeft].y + newVertices[bottomLeft].y + newVertices[bottomLeft + size].y
+            + newVertices[topLeft + size].y)+Random.Range(-randomOffset,randomOffset);
         //avg value of corners + randomOffset
 
         //Square Step 

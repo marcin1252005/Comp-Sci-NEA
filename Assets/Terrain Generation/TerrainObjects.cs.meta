@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: aa7fda3e881e9ff4b8d993eb020f8f60
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - generatedTerrain: {instanceID: 0}
+  - deerPrefab: {instanceID: 0}
+  executionOrder: 300
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
